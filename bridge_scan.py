@@ -107,7 +107,7 @@ def recebe_ficheiro(conn):
                 f.write(dados)
                 dados_recebidos += len(dados)
         
-        # espera pelo FIM
+       
         conn.recv(1024)
         
         return caminho

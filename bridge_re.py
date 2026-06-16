@@ -43,13 +43,13 @@ def pe_analise(caminho):
         return {"erro": f"Falha ao ler ficheiro: {str(e)}"}
 
 def detecta_packer(caminho):
-    # devolve strings que parecem packers, sem rotular qual é
+    # devolve strings que parecem packers
     try:
         f = open(caminho, "rb")
         dados = f.read().decode('latin-1', errors='ignore').lower()
         f.close()
         
-        # strings que geralmente aparecem em packers
+        # as strings que geralmente aparecem em packers
         possiveis_packers = []
         padroes = ["upx", "vmprotect", "themida", "aspack", "mpress", 
                    "pecompact", "nspack", "yoda", "telock", "pete"]
