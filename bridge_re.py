@@ -69,42 +69,37 @@ def detecta_packer(caminho):
         return {"packer": "Erro", "info": "Nao foi possivel ler o ficheiro."}
 
 def tira_strings(caminho, max_strings=200):
+    import re
     try:
-        import os as _os
-        tamanho = _os.path.getsize(caminho)
-
         with open(caminho, "rb") as f:
-            dados_inicio = f.read(1000000)
-            dados_fim = b""
-            if tamanho > 1100000:
-                f.seek(tamanho - 100000)
-                dados_fim = f.read()
+            dados = f.read()
 
-        def extrai(dados):
-            texto = dados.decode('latin-1', errors='ignore')
-            resultado = []
-            palavra = ""
-            for c in texto:
-                if c.isprintable() or c in '\n\r\t':
-                    palavra += c
-                else:
-                    if len(palavra) >= 4:
-                        resultado.append(palavra.strip())
-                    palavra = ""
-            if len(palavra) >= 4:
-                resultado.append(palavra.strip())
-            return resultado
+        texto = dados.decode('latin-1', errors='ignore')
 
-        # strings do fim primeiro para nao serem cortadas pelo limite
-        todas = extrai(dados_fim) + extrai(dados_inicio)
+        strings = []
+        palavra = ""
+        for c in texto:
+            if c.isprintable() or c in '\n\r\t':
+                palavra += c
+            else:
+                if len(palavra) >= 4:
+                    strings.append(palavra.strip())
+                palavra = ""
+        if len(palavra) >= 4:
+            strings.append(palavra.strip())
 
         sem_dupes = []
         visto = set()
-        for s in todas:
+        for s in strings:
             if s not in visto:
                 sem_dupes.append(s)
                 visto.add(s)
 
-        return {"strings": sem_dupes[:max_strings], "quantidade": len(sem_dupes)}
+        # strings com IP primeiro para nao serem cortadas pelo limite
+        ip_re = re.compile(r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b')
+        com_ip = [s for s in sem_dupes if ip_re.search(s)]
+        sem_ip = [s for s in sem_dupes if not ip_re.search(s)]
+
+        return {"strings": (com_ip + sem_ip)[:max_strings], "quantidade": len(sem_dupes)}
     except:
         return {"strings": [], "quantidade": 0}
