@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexoVault — Soluções Financeiras Inteligentes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0D1B2A;
+      --navy-mid: #1A2E45;
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --cream: #F5F0E8;
+      --text: #1A1A2E;
+      --muted: #5A6478;
+      --border: rgba(201,168,76,0.25);
+      --white: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--text); line-height: 1.6; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,27,42,0.97);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark {
+      width: 36px; height: 36px; background: var(--gold);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark svg { width: 20px; height: 20px; fill: var(--navy); }
+    .logo-text { font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: -0.3px; }
+    .logo-text span { color: var(--gold); }
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav ul a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; transition: color .2s; }
+    nav ul a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: var(--navy); font-size: 13px; font-weight: 600;
+      padding: 8px 20px; border-radius: 6px; text-decoration: none; transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 60%, #0a2a1a 100%);
+      display: flex; align-items: center; padding: 0 5%;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A84C' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-content { max-width: 620px; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(201,168,76,0.15); border: 1px solid var(--border);
+      color: var(--gold-light); font-size: 12px; font-weight: 500; letter-spacing: 1px;
+      padding: 5px 14px; border-radius: 20px; text-transform: uppercase; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 5vw, 64px);
+      font-weight: 700; color: var(--white); line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero p { font-size: 17px; color: rgba(255,255,255,0.65); max-width: 480px; margin-bottom: 36px; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold); color: var(--navy); font-weight: 600; font-size: 15px;
+      padding: 14px 28px; border-radius: 8px; text-decoration: none; transition: all .2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-ghost {
+      border: 1px solid rgba(255,255,255,0.25); color: var(--white);
+      font-size: 15px; padding: 14px 28px; border-radius: 8px; text-decoration: none; transition: all .2s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 56px;
+      border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px;
+    }
+    .stat-val { font-size: 28px; font-weight: 700; color: var(--white); }
+    .stat-val span { color: var(--gold); }
+    .stat-lbl { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+    .hero-visual {
+      position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+      width: min(420px, 42%);
+    }
+    .card-mockup {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 16px; padding: 28px; backdrop-filter: blur(12px);
+    }
+    .card-mockup-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+    .card-mockup-header h4 { color: rgba(255,255,255,0.6); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .balance-val { font-size: 36px; font-weight: 700; color: var(--white); margin: 4px 0; }
+    .balance-delta { font-size: 13px; color: #4ade80; }
+    .mini-chart { display: flex; align-items: flex-end; gap: 4px; height: 48px; margin: 16px 0; }
+    .bar { background: var(--gold); border-radius: 3px 3px 0 0; flex: 1; opacity: 0.7; transition: opacity .2s; }
+    .bar:hover { opacity: 1; }
+    .bar.hi { opacity: 1; }
+    .card-row { display: flex; justify-content: space-between; font-size: 13px; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.07); }
+    .card-row span:first-child { color: rgba(255,255,255,0.5); }
+    .card-row span:last-child { color: var(--white); font-weight: 500; }
+    .badge-active { background: rgba(74,222,128,0.15); color: #4ade80; font-size: 11px; padding: 2px 10px; border-radius: 20px; }
+
+    /* SECTION SHARED */
+    section { padding: 96px 5%; }
+    .section-label {
+      font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3vw, 42px); font-weight: 700;
+      color: var(--text); line-height: 1.2; margin-bottom: 16px;
+    }
+    .section-sub { font-size: 16px; color: var(--muted); max-width: 560px; }
+
+    /* NUMBERS BAND */
+    .numbers-band {
+      background: var(--navy);
+      padding: 60px 5%;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1px; border-top: 3px solid var(--gold);
+    }
+    .num-item { padding: 32px 24px; border-right: 1px solid rgba(201,168,76,0.15); }
+    .num-item:last-child { border-right: none; }
+    .num-val { font-size: 42px; font-weight: 700; color: var(--gold); line-height: 1; }
+    .num-desc { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 6px; text-transform: uppercase; letter-spacing: .5px; }
+
+    /* SERVICES */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 56px; }
+    .service-card {
+      border: 1px solid #e8e2d8; border-radius: 12px; padding: 28px;
+      transition: all .25s; background: var(--white);
+    }
+    .service-card:hover { border-color: var(--gold); box-shadow: 0 8px 32px rgba(201,168,76,0.12); transform: translateY(-2px); }
+    .service-icon {
+      width: 48px; height: 48px; background: var(--cream); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+    }
+    .service-icon svg { width: 24px; height: 24px; stroke: var(--gold); fill: none; stroke-width: 1.8; }
+    .service-card h3 { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+    .service-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .service-link { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: var(--gold); text-decoration: none; margin-top: 16px; }
+    .service-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* TRUST */
+    .trust-section { background: var(--cream); }
+    .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 56px; }
+    @media (max-width: 768px) { .trust-grid { grid-template-columns: 1fr; } }
+    .trust-items { display: flex; flex-direction: column; gap: 24px; }
+    .trust-item { display: flex; gap: 16px; }
+    .trust-num { font-size: 13px; font-weight: 700; color: var(--gold); min-width: 24px; }
+    .trust-item h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .trust-item p { font-size: 14px; color: var(--muted); }
+    .cert-box {
+      background: var(--white); border-radius: 16px; padding: 36px;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .cert-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 20px; }
+    .cert-list { display: flex; flex-direction: column; gap: 14px; }
+    .cert-row {
+      display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+      background: var(--cream); border-radius: 8px;
+    }
+    .cert-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
+    .cert-row span { font-size: 14px; color: var(--text); font-weight: 500; }
+    .cert-row small { margin-left: auto; font-size: 12px; color: var(--muted); }
+
+    /* TESTIMONIALS */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 56px; }
+    .testi-card {
+      background: var(--white); border: 1px solid #e8e2d8;
+      border-radius: 12px; padding: 28px;
+    }
+    .testi-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+    .star { width: 14px; height: 14px; background: var(--gold); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 69% 57%, 79% 91%, 50% 70%, 21% 91%, 31% 57%, 2% 35%, 39% 35%); }
+    .testi-text { font-size: 15px; color: var(--text); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: var(--white); flex-shrink: 0;
+    }
+    .testi-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .testi-role { font-size: 12px; color: var(--muted); }
+
+    /* PARTNERS */
+    .partners-band { background: var(--navy); padding: 56px 5%; }
+    .partners-label { text-align: center; font-size: 13px; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 36px; }
+    .partners-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 48px; align-items: center; }
+    .partner-name {
+      font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.25);
+      letter-spacing: -0.5px; transition: color .2s; cursor: default;
+    }
+    .partner-name:hover { color: rgba(201,168,76,0.6); }
+
+    /* FAQ */
+    .faq-section { background: var(--cream); }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; margin-top: 56px; align-items: start; }
+    @media (max-width: 768px) { .faq-grid { grid-template-columns: 1fr; gap: 40px; } }
+    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+    .faq-item { border-bottom: 1px solid #ddd8ce; }
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 0; cursor: pointer; font-size: 15px; font-weight: 500; color: var(--text);
+      user-select: none;
+    }
+    .faq-q:hover { color: var(--gold); }
+    .faq-arrow { font-size: 18px; color: var(--gold); transition: transform .25s; }
+    .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; padding-bottom: 16px; display: none; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-arrow { transform: rotate(45deg); }
+    .contact-box {
+      background: var(--navy); border-radius: 16px; padding: 40px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .contact-box h3 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--white); }
+    .contact-box p { font-size: 14px; color: rgba(255,255,255,0.5); }
+    .input-row { display: flex; flex-direction: column; gap: 10px; }
+    .input-row input, .input-row select {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 12px 16px; color: var(--white); font-size: 14px;
+      font-family: 'Inter', sans-serif; outline: none; transition: border-color .2s;
+    }
+    .input-row input::placeholder { color: rgba(255,255,255,0.3); }
+    .input-row input:focus, .input-row select:focus { border-color: var(--gold); }
+    .input-row select { appearance: none; background-color: rgba(255,255,255,0.06); }
+    .input-row select option { background: var(--navy); }
+    .contact-box .btn-primary { text-align: center; border: none; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+    /* FOOTER */
+    footer { background: var(--navy); padding: 60px 5% 32px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; margin-top: 12px; max-width: 280px; }
+    .footer-col h5 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a { font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap;
+    }
+    .footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .footer-tags { display: flex; gap: 16px; }
+    .footer-tag { font-size: 11px; color: rgba(255,255,255,0.25); text-decoration: none; }
+
+    /* COOKIE BANNER */
+    #cookie-banner {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 999;
+      background: var(--navy); border-top: 1px solid var(--border);
+      padding: 16px 5%; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      flex-wrap: wrap;
+    }
+    #cookie-banner p { font-size: 13px; color: rgba(255,255,255,0.6); }
+    #cookie-banner p a { color: var(--gold); }
+    .cookie-btns { display: flex; gap: 12px; flex-shrink: 0; }
+    .btn-cookie-ok {
+      background: var(--gold); color: var(--navy); font-size: 13px; font-weight: 600;
+      padding: 8px 18px; border-radius: 6px; border: none; cursor: pointer;
+    }
+    .btn-cookie-x {
+      background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6);
+      font-size: 13px; padding: 8px 18px; border-radius: 6px; cursor: pointer;
+    }
+
+    /* TICKER */
+    .ticker-wrap { background: var(--gold); overflow: hidden; padding: 8px 0; }
+    .ticker { display: flex; gap: 0; animation: ticker 28s linear infinite; width: max-content; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .ticker-item { font-size: 12px; font-weight: 600; color: var(--navy); padding: 0 32px; white-space: nowrap; }
+    .ticker-sep { color: rgba(13,27,42,0.4); }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2L4 7v5c0 5.25 3.4 10.15 8 11.35C16.6 22.15 20 17.25 20 12V7L12 2z"/></svg>
+    </div>
+    <span class="logo-text">Nexo<span>Vault</span></span>
+  </a>
+  <ul>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#seguranca">Segurança</a></li>
+    <li><a href="#clientes">Clientes</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Abrir Conta</a>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-wrap" style="margin-top:64px;">
+  <div class="ticker">
+    <span class="ticker-item">EUR/USD 1.0847 <span class="ticker-sep">▲ +0.12%</span></span>
+    <span class="ticker-item">BTC/EUR 62.340 <span class="ticker-sep">▼ -1.03%</span></span>
+    <span class="ticker-item">PSI-20 6.412 <span class="ticker-sep">▲ +0.34%</span></span>
+    <span class="ticker-item">EURIBOR 3M 3.842 <span class="ticker-sep">▼ -0.02%</span></span>
+    <span class="ticker-item">OURO 2.318 USD/oz <span class="ticker-sep">▲ +0.58%</span></span>
+    <span class="ticker-item">DAX 18.204 <span class="ticker-sep">▲ +0.27%</span></span>
+    <span class="ticker-item">EUR/USD 1.0847 <span class="ticker-sep">▲ +0.12%</span></span>
+    <span class="ticker-item">BTC/EUR 62.340 <span class="ticker-sep">▼ -1.03%</span></span>
+    <span class="ticker-item">PSI-20 6.412 <span class="ticker-sep">▲ +0.34%</span></span>
+    <span class="ticker-item">EURIBOR 3M 3.842 <span class="ticker-sep">▼ -0.02%</span></span>
+    <span class="ticker-item">OURO 2.318 USD/oz <span class="ticker-sep">▲ +0.58%</span></span>
+    <span class="ticker-item">DAX 18.204 <span class="ticker-sep">▲ +0.27%</span></span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Licenciada pelo Banco de Portugal · Reg. nº 4872-F
+    </div>
+    <h1>Gerir o seu <em>dinheiro</em> nunca foi tão simples</h1>
+    <p>A NexoVault combina tecnologia de ponta com estratégias de investimento personalizadas para que o seu patrimônio cresça de forma segura e inteligente.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn-primary">Começar agora — é grátis</a>
+      <a href="#servicos" class="btn-ghost">Ver os nossos serviços</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">182<span>k+</span></div>
+        <div class="stat-lbl">Clientes ativos</div>
+      </div>
+      <div>
+        <div class="stat-val">€4<span>.2B</span></div>
+        <div class="stat-lbl">Ativos geridos</div>
+      </div>
+      <div>
+        <div class="stat-val">14<span>+</span></div>
+        <div class="stat-lbl">Anos no mercado</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="card-mockup">
+      <div class="card-mockup-header">
+        <div>
+          <h4>Portfólio Total</h4>
+          <div class="balance-val">€ 84.320</div>
+          <div class="balance-delta">▲ +3,2% este mês</div>
+        </div>
+        <div style="width:38px;height:38px;background:rgba(201,168,76,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+      </div>
+      <div class="mini-chart">
+        <div class="bar" style="height:55%;"></div>
+        <div class="bar" style="height:65%;"></div>
+        <div class="bar" style="height:48%;"></div>
+        <div class="bar" style="height:70%;"></div>
+        <div class="bar" style="height:60%;"></div>
+        <div class="bar" style="height:75%;"></div>
+        <div class="bar" style="height:68%;"></div>
+        <div class="bar hi" style="height:88%;"></div>
+        <div class="bar" style="height:80%;"></div>
+        <div class="bar hi" style="height:100%;"></div>
+      </div>
+      <div class="card-row">
+        <span>Ações & ETFs</span>
+        <span>€ 41.200</span>
+      </div>
+      <div class="card-row">
+        <span>Obrigações</span>
+        <span>€ 22.840</span>
+      </div>
+      <div class="card-row">
+        <span>Cripto</span>
+        <span>€ 12.180</span>
+      </div>
+      <div class="card-row">
+        <span>Estado</span>
+        <span><span class="badge-active">Ativo</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS BAND -->
+<div class="numbers-band">
+  <div class="num-item">
+    <div class="num-val">182k</div>
+    <div class="num-desc">Clientes registados</div>
+  </div>
+  <div class="num-item">
+    <div class="num-val">€4.2B</div>
+    <div class="num-desc">Volume sob gestão</div>
+  </div>
+  <div class="num-item">
+    <div class="num-val">99.98%</div>
+    <div class="num-desc">Uptime da plataforma</div>
+  </div>
+  <div class="num-item">
+    <div class="num-val">38</div>
+    <div class="num-desc">Países disponíveis</div>
+  </div>
+  <div class="num-item">
+    <div class="num-val">4.8★</div>
+    <div class="num-desc">Rating Trustpilot</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="servicos">
+  <div class="section-label">O que oferecemos</div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;">
+    <h2 class="section-title">Soluções para cada etapa<br>da sua vida financeira</h2>
+    <a href="#contacto" class="btn-primary" style="font-size:14px;padding:12px 24px;">Ver todos os planos</a>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      </div>
+      <h3>Conta Inteligente</h3>
+      <p>Conta corrente com IBAN português, sem mensalidade, cartão Visa incluído e cashback em compras do dia-a-dia.</p>
+      <a href="#" class="service-link">Saber mais <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <h3>Gestão de Investimentos</h3>
+      <p>Portfólios geridos por IA com rebalanceamento automático. Adapte o risco ao seu perfil e horizonte temporal.</p>
+      <a href="#" class="service-link">Saber mais <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h3>Crédito Habitação</h3>
+      <p>Taxas competitivas, processo 100% digital e resposta em 48 horas. Compramos a burocracia, não você.</p>
+      <a href="#" class="service-link">Saber mais <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3>Poupança PPR</h3>
+      <p>Planos de reforma com benefícios fiscais e rendimento garantido. O seu futuro merece um plano sólido.</p>
+      <a href="#" class="service-link">Saber mais <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3>Transferências Internacionais</h3>
+      <p>Envie dinheiro para mais de 180 países com taxas de câmbio reais e sem comissões ocultas.</p>
+      <a href="#" class="service-link">Saber mais <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      </div>
+      <h3>API para Empresas</h3>
+      <p>Integre os nossos serviços financeiros na sua plataforma. Documentação completa e suporte dedicado.</p>
+      <a href="#" class="service-link">Saber mais <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST / SECURITY -->
+<section id="seguranca" class="trust-section">
+  <div class="section-label">Segurança & Conformidade</div>
+  <h2 class="section-title">A sua confiança é a nossa<br>maior responsabilidade</h2>
+  <div class="trust-grid">
+    <div class="trust-items">
+      <div class="trust-item">
+        <span class="trust-num">01</span>
+        <div>
+          <h4>Encriptação de ponta a ponta</h4>
+          <p>Todos os dados são encriptados com AES-256. As suas credenciais nunca são armazenadas em texto legível.</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">02</span>
+        <div>
+          <h4>Autenticação multifator</h4>
+          <p>Proteja a sua conta com 2FA via app autenticadora, SMS ou chave de segurança física FIDO2.</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">03</span>
+        <div>
+          <h4>Monitorização 24/7</h4>
+          <p>O nosso SOC monitoriza continuamente tentativas de acesso suspeitas e bloqueia automaticamente ameaças.</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">04</span>
+        <div>
+          <h4>Fundos protegidos</h4>
+          <p>Depósitos até €100.000 garantidos pelo Fundo de Garantia de Depósitos português, ao abrigo da legislação europeia.</p>
+        </div>
+      </div>
+    </div>
+    <div class="cert-box">
+      <div class="cert-title">Certificações ativas</div>
+      <div class="cert-list">
+        <div class="cert-row">
+          <div class="cert-dot"></div>
+          <span>ISO/IEC 27001:2022</span>
+          <small>Válido até Dez 2026</small>
+        </div>
+        <div class="cert-row">
+          <div class="cert-dot"></div>
+          <span>PCI DSS Level 1</span>
+          <small>Auditado 2024</small>
+        </div>
+        <div class="cert-row">
+          <div class="cert-dot"></div>
+          <span>SOC 2 Type II</span>
+          <small>Válido até Mar 2025</small>
+        </div>
+        <div class="cert-row">
+          <div class="cert-dot"></div>
+          <span>DORA Compliant (UE 2022/2554)</span>
+          <small>Ativo</small>
+        </div>
+        <div class="cert-row">
+          <div class="cert-dot"></div>
+          <span>RGPD / GDPR</span>
+          <small>Supervisionado CNPD</small>
+        </div>
+        <div class="cert-row">
+          <div class="cert-dot"></div>
+          <span>Licença Banco de Portugal</span>
+          <small>Reg. 4872-F</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<div class="partners-band">
+  <div class="partners-label">Parceiros e integrações</div>
+  <div class="partners-row">
+    <span class="partner-name">Siemens Financial</span>
+    <span class="partner-name">EY Portugal</span>
+    <span class="partner-name">Visa</span>
+    <span class="partner-name">Mastercard</span>
+    <span class="partner-name">AWS</span>
+    <span class="partner-name">Euronext</span>
+    <span class="partner-name">Bloomberg</span>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section id="clientes">
+  <div class="section-label">Clientes satisfeitos</div>
+  <h2 class="section-title">O que dizem os nossos clientes</h2>
+  <p class="section-sub">Mais de 182.000 pessoas e empresas confiam na NexoVault para gerir o seu dinheiro.</p>
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">"Abri a conta em menos de 10 minutos e a carteira de investimentos já me rendeu 8,4% este ano. Recomendo a qualquer pessoa que queira dar o primeiro passo."</p>
+      <div class="testi-author">
+        <div class="avatar" style="background:#4338ca;">MF</div>
+        <div>
+          <div class="testi-name">Margarida Fonseca</div>
+          <div class="testi-role">Designer, Lisboa</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">"Usamos a API da NexoVault para gerir os pagamentos da nossa startup. A documentação é excelente e o suporte responde em menos de 2 horas."</p>
+      <div class="testi-author">
+        <div class="avatar" style="background:#0f766e;">RT</div>
+        <div>
+          <div class="testi-name">Rodrigo Tavares</div>
+          <div class="testi-role">CTO, Flowbite Labs</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">"Transferi o crédito habitação para a NexoVault e poupei 180€/mês. O processo foi completamente digital e a equipa foi incrivelmente transparente."</p>
+      <div class="testi-author">
+        <div class="avatar" style="background:#b45309;">AC</div>
+        <div>
+          <div class="testi-name">Ana Carvalho</div>
+          <div class="testi-role">Engenheira, Porto</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">"As notificações em tempo real e o painel de controlo são fantásticos. Finalmente sinto que tenho controlo total sobre as minhas finanças."</p>
+      <div class="testi-author">
+        <div class="avatar" style="background:#be185d;">JS</div>
+        <div>
+          <div class="testi-name">João Silva</div>
+          <div class="testi-role">Médico, Coimbra</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">"Depois de experimentar N banks, a NexoVault foi a única que combinou taxas de câmbio justas com uma interface realmente intuitiva. Uso todos os dias."</p>
+      <div class="testi-author">
+        <div class="avatar" style="background:#6d28d9;">PL</div>
+        <div>
+          <div class="testi-name">Paulo Lemos</div>
+          <div class="testi-role">Consultor, Braga</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">"Emigrei para o Reino Unido e a NexoVault tornou as transferências internacionais incrivelmente simples. Economizo mais de €30 por envio face ao banco tradicional."</p>
+      <div class="testi-author">
+        <div class="avatar" style="background:#047857;">IM</div>
+        <div>
+          <div class="testi-name">Inês Martins</div>
+          <div class="testi-role">Enfermeira, Londres</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ + CONTACT -->
+<section id="faq" class="faq-section">
+  <div class="section-label">Perguntas frequentes</div>
+  <h2 class="section-title">Tem perguntas? Temos respostas.</h2>
+  <div class="faq-grid">
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          A NexoVault é segura para guardar o meu dinheiro?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Sim. A NexoVault é licenciada pelo Banco de Portugal e os depósitos estão cobertos pelo Fundo de Garantia de Depósitos até €100.000. Além disso, somos certificados ISO 27001 e PCI DSS.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Quanto tempo demora a abrir uma conta?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">O processo é 100% digital e demora em média 8 minutos. Vai precisar do seu BI/CC, NIF e um selfie para verificação de identidade (KYC).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Existem custos escondidos?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Não. A conta básica é completamente gratuita. Publicamos a nossa tabela de comissões completa em nexovault.pt/precos. Sem surpresas.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Posso gerir a conta pelo telemóvel?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Sim, temos app para iOS e Android com nota 4.8 estrelas. Todas as funcionalidades estão disponíveis em mobile, incluindo a gestão de investimentos.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Como funciona o suporte ao cliente?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Suporte via chat em tempo real (dias úteis 8h–22h), email com resposta em 4h, e linha telefónica para clientes Premium. Temos também uma base de conhecimento com mais de 400 artigos.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          A NexoVault está disponível fora de Portugal?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Sim, estamos disponíveis em 38 países do Espaço Económico Europeu. Cidadãos de fora da UE podem abrir conta verificando a sua residência europeia.</div>
+      </div>
+    </div>
+
+    <div id="contacto" class="contact-box">
+      <h3>Fale connosco</h3>
+      <p>A nossa equipa responde em menos de 4 horas em dias úteis.</p>
+      <div class="input-row">
+        <input type="text" placeholder="O seu nome completo" />
+        <input type="email" placeholder="Email" />
+        <input type="tel" placeholder="Telefone (opcional)" />
+        <select>
+          <option value="" disabled selected>Assunto</option>
+          <option>Abrir conta</option>
+          <option>Suporte técnico</option>
+          <option>Investimentos</option>
+          <option>Crédito Habitação</option>
+          <option>Parceria / API</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="alert('Mensagem recebida! Entraremos em contacto em breve.')">Enviar mensagem</button>
+      <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:-8px;">Ao submeter, aceita a nossa <a href="#" style="color:var(--gold);">Política de Privacidade</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 24 24"><path d="M12 2L4 7v5c0 5.25 3.4 10.15 8 11.35C16.6 22.15 20 17.25 20 12V7L12 2z"/></svg>
+        </div>
+        <span class="logo-text" style="font-size:16px;">Nexo<span>Vault</span></span>
+      </a>
+      <p>Soluções financeiras inteligentes para particulares e empresas. Licenciada pelo Banco de Portugal, reg. nº 4872-F.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Produto</h5>
+      <ul>
+        <li><a href="#">Conta Inteligente</a></li>
+        <li><a href="#">Investimentos</a></li>
+        <li><a href="#">Crédito Habitação</a></li>
+        <li><a href="#">PPR Poupança</a></li>
+        <li><a href="#">Transferências</a></li>
+        <li><a href="#">API Empresas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Empresa</h5>
+      <ul>
+        <li><a href="#">Sobre nós</a></li>
+        <li><a href="#">Equipa</a></li>
+        <li><a href="#">Imprensa</a></li>
+        <li><a href="#">Carreiras</a></li>
+        <li><a href="#">Relatórios</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Termos de serviço</a></li>
+        <li><a href="#">Política de privacidade</a></li>
+        <li><a href="#">Cookies</a></li>
+        <li><a href="#">Tabela de comissões</a></li>
+        <li><a href="#">Reclamações</a></li>
+        <li><a href="#">Compliance</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 NexoVault S.A. · NIF 513 872 044 · Av. da Liberdade 144, 1250-146 Lisboa</p>
+    <div class="footer-tags">
+      <a href="#" class="footer-tag">Banco de Portugal</a>
+      <a href="#" class="footer-tag">CMVM</a>
+      <a href="#" class="footer-tag">CNPD</a>
+    </div>
+  </div>
+</footer>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+  <p>Utilizamos cookies para melhorar a experiência e analisar o tráfego. Ao continuar, aceita a nossa <a href="#">política de cookies</a>.</p>
+  <div class="cookie-btns">
+    <button class="btn-cookie-x" onclick="document.getElementById('cookie-banner').remove()">Rejeitar</button>
+    <button class="btn-cookie-ok" onclick="document.getElementById('cookie-banner').remove()">Aceitar todos</button>
+  </div>
+</div>
+
+<script>
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+</script>
+</body>
+</html>
