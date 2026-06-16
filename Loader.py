@@ -11,13 +11,13 @@ import re
 from bridge_re import pe_analise, detecta_packer, tira_strings
 
 # ip e porta do kali do Pedro
-KALI_IP = ""
-KALI_PORTA = ""
+KALI_IP = "100.99.121.111"
+KALI_PORTA = "9999"
 
 def deteta_kali_automatico():
     # tenta encontrar o bridge_scan do pedro na rede local
     
-    ips_teste = ["192.168.1.50", "192.168.1.100", "10.0.0.5", "127.0.0.1"]
+    ips_teste = ["100.99.121.111"]
     porta_teste = 9999
     
     for ip in ips_teste:
