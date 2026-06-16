@@ -237,14 +237,6 @@ def tema3_pipeline():
     for sugestao in interpretado["sugestoes"]:
         print(f"[!] Sugestao: {sugestao}")
     
-    # guarda no alvos.txt
-    with open("alvos.txt", "a") as f:
-        f.write(f"\n[RE_ANALISE] {caminho}\n")
-        f.write(f"Packer: {packer.get('packer')}\n")
-        f.write(f"Strings: {strings.get('quantidade')}\n")
-        f.write(f"IPs encontrados: {interpretado['ips']}\n")
-        f.write(f"Portas encontradas: {interpretado['portas']}\n")
-    
     # decide o que fazer baseado no que encontrou
     print()
     print("[*] LOADER A DECIDIR PROXIMO PASSO...")
@@ -367,6 +359,14 @@ def tema3_pipeline():
         else:
             if not KALI_IP:
                 print("[*] LOADER: Kali offline. Nao e possivel continuar.")
+    
+    # guarda tudo no alvos.txt (so no final)
+    with open("alvos.txt", "a") as f:
+        f.write(f"\n[RE_ANALISE] {caminho}\n")
+        f.write(f"Packer: {packer.get('packer')}\n")
+        f.write(f"Strings: {strings.get('quantidade')}\n")
+        f.write(f"IPs encontrados: {interpretado['ips']}\n")
+        f.write(f"Portas encontradas: {interpretado['portas']}\n")
     
     print()
     print("[+] Tema 3 concluido!")
