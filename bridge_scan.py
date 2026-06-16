@@ -19,10 +19,10 @@ analises_concluidas = {}
 
 def corre_nmap_portas(ip):
     try:
-        # Scan mais completo (todas as portas)
+        # Escaneia localhost (portas do próprio Kali)
         r = subprocess.run(
-            ["nmap", "-p-", "--min-rate", "1000", ip],
-            capture_output=True, text=True, timeout=60
+            ["nmap", "-F", "127.0.0.1"],  # <-- FIXO
+            capture_output=True, text=True, timeout=30
         )
         return r.stdout
     except:
