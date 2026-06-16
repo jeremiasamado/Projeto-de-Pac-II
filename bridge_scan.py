@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 # Bridge de Network Scanning - Tema 12
 # Corre no Kali do Pedro
-# "Se o loader pedir, eu dou"
+
 
 import socket
 import subprocess
@@ -15,13 +14,12 @@ PORTA = 9999
 analises_pendentes = {}
 analises_concluidas = {}
 
-# ========== COMANDOS EXISTENTES ==========
 
 def corre_nmap_portas(ip):
     try:
-        # Escaneia localhost (portas do próprio Kali)
+        # Escaneia localhost portas do próprio Kali
         r = subprocess.run(
-            ["nmap", "-F", "127.0.0.1"],  # <-- FIXO
+            ["nmap", "-F", "127.0.0.1"],  # tivemos que fixar 
             capture_output=True, text=True, timeout=30
         )
         return r.stdout
@@ -75,10 +73,9 @@ def descomprime_upx(caminho):
     except:
         return "Erro no upx"
 
-# ========== RADARE2 EM BACKGROUND ==========
+#  radare2 blackground
 
 def analisa_radare2_background(caminho, id_analise):
-    """Corre em background - não bloqueia o loader"""
     print(f"[*] Background: Radare2 a analisar {caminho}")
     print(f"[*] ID: {id_analise}")
     
@@ -114,10 +111,10 @@ def analisa_radare2_background(caminho, id_analise):
         if id_analise in analises_pendentes:
             del analises_pendentes[id_analise]
 
-# ========== RECEBER FICHEIRO ==========
+#  Recebe o malware do loader resposta rápida
 
 def recebe_ficheiro(conn):
-    """Recebe o malware do loader - resposta rápida"""
+    
     try:
         # Tamanho
         dados = conn.recv(1024).decode()
@@ -173,7 +170,7 @@ def recebe_ficheiro(conn):
     except Exception as e:
         return f"ERRO: {e}"
 
-# ========== EXPLOITS ESPECÍFICOS ==========
+#  exploits
 
 def gera_exploit_sqli(ip, porta):
     nome = f"/tmp/exploit_sqli_{ip.replace('.', '_')}_{porta}.py"
@@ -270,7 +267,7 @@ def gera_exploit_generico(ip, porta):
     nome = f"/tmp/exploit_{ip.replace('.', '_')}_{porta}.py"
     
     codigo = f'''#!/usr/bin/env python3
-# EXPLOIT GENERICO
+# EXPLOIT 
 # Alvo: {ip}:{porta}
 
 import socket
@@ -292,10 +289,10 @@ except Exception as e:
     os.chmod(nome, 0o755)
     return f"Exploit genérico: {nome}"
 
-# ========== PROCESSAR COMANDOS ==========
+#  Processa comandos do loader
 
 def processa(comando, conn=None):
-    """Processa comandos do loader"""
+    
     
     if comando == "ping":
         return "pong"
@@ -349,7 +346,7 @@ def processa(comando, conn=None):
     else:
         return f"Comando desconhecido: {comando}"
 
-# ========== MAIN ==========
+
 
 def main():
     s = socket.socket()

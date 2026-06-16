@@ -1,7 +1,6 @@
 # Bridge de Web Testing - Tema 12 (extensão ofensiva)
 # Corre no Kali do Pedro, recebe comandos do loader.py
 # Testa vulnerabilidades web: SQLi, XSS, LFI
-# ZERO PORTAS FIXAS
 
 import socket
 import subprocess

