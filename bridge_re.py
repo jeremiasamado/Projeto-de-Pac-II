@@ -69,37 +69,42 @@ def detecta_packer(caminho):
         return {"packer": "Erro", "info": "Nao foi possivel ler o ficheiro."}
 
 def tira_strings(caminho, max_strings=200):
-    """
-    Tira strings do binario.
-    Agora devolve mais strings (200 em vez de 50) 
-    para o orquestrador encontrar o IP do Pedro.
-    """
     try:
-        f = open(caminho, "rb")
-        dados = f.read()[:1000000]  # so os primeiros 1MB para nao demorar
-        f.close()
-        
-        texto = dados.decode('latin-1', errors='ignore')
-        
-        strings = []
-        palavra = ""
-        for c in texto:
-            if c.isprintable() or c in '\n\r\t':
-                palavra += c
-            else:
-                if len(palavra) >= 4:
-                    strings.append(palavra.strip())
-                palavra = ""
-        
-        if len(palavra) >= 4:
-            strings.append(palavra.strip())
-        
-        # tira duplicados
+        import os as _os
+        tamanho = _os.path.getsize(caminho)
+
+        with open(caminho, "rb") as f:
+            dados_inicio = f.read(1000000)
+            dados_fim = b""
+            if tamanho > 1100000:
+                f.seek(tamanho - 100000)
+                dados_fim = f.read()
+
+        def extrai(dados):
+            texto = dados.decode('latin-1', errors='ignore')
+            resultado = []
+            palavra = ""
+            for c in texto:
+                if c.isprintable() or c in '\n\r\t':
+                    palavra += c
+                else:
+                    if len(palavra) >= 4:
+                        resultado.append(palavra.strip())
+                    palavra = ""
+            if len(palavra) >= 4:
+                resultado.append(palavra.strip())
+            return resultado
+
+        # strings do fim primeiro para nao serem cortadas pelo limite
+        todas = extrai(dados_fim) + extrai(dados_inicio)
+
         sem_dupes = []
-        for s in strings:
-            if s not in sem_dupes:
+        visto = set()
+        for s in todas:
+            if s not in visto:
                 sem_dupes.append(s)
-        
+                visto.add(s)
+
         return {"strings": sem_dupes[:max_strings], "quantidade": len(sem_dupes)}
     except:
         return {"strings": [], "quantidade": 0}
