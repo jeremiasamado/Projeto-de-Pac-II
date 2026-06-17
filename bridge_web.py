@@ -32,7 +32,7 @@ def testa_sqli(url, parametro):
         url_teste = f"{url}?{parametro}={payload_encoded}"
         
         # Usa curl com timeout para não ficar preso
-        cmd = f"curl -s -m 10 '{url_teste}'"
+        cmd = f"curl -s -k -m 10 '{url_teste}'"
         
         try:
             print(f"[*] A testar SQLi: {url_teste[:80]}...")
@@ -60,7 +60,7 @@ def testa_sqli(url, parametro):
             # Verifica se o payload teve efeito (resposta diferente)
             # Faz um teste sem payload para comparar
             url_normal = f"{url}?{parametro}=teste"
-            cmd_normal = f"curl -s -m 10 '{url_normal}'"
+            cmd_normal = f"curl -s -k -m 10 '{url_normal}'"
             resultado_normal = subprocess.run(
                 cmd_normal,
                 shell=True,
@@ -101,7 +101,7 @@ def testa_xss(url, parametro):
         payload_encoded = urllib.parse.quote(payload)
         url_teste = f"{url}?{parametro}={payload_encoded}"
         
-        cmd = f"curl -s -m 10 '{url_teste}'"
+        cmd = f"curl -s -k -m 10 '{url_teste}'"
         
         try:
             print(f"[*] A testar XSS: {url_teste[:80]}...")
@@ -147,7 +147,7 @@ def testa_lfi(url, parametro):
         payload_encoded = urllib.parse.quote(payload)
         url_teste = f"{url}?{parametro}={payload_encoded}"
         
-        cmd = f"curl -s -m 10 '{url_teste}'"
+        cmd = f"curl -s -k -m 10 '{url_teste}'"
         
         try:
             print(f"[*] A testar LFI: {url_teste[:80]}...")
