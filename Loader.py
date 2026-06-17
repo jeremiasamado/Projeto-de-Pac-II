@@ -296,7 +296,6 @@ def gera_deface(ip, porta):
 <p>O site do Pedro foi comprometido!</p>
 <p>IP: {ip}:{porta}</p>
 <p>DATA: {time.strftime('%Y-%m-%d %H:%M:%S')}</p>
-<marquee>#HACKED #CYBERSECURITY #TEMA12</marquee>
 </body>
 </html>'''
     
